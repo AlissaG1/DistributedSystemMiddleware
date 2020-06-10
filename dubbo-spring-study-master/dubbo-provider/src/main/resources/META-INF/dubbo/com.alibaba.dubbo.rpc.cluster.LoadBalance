@@ -1,0 +1,2 @@
+latency=com.balance.LatencyLoadBalance
+random1=com.alibaba.dubbo.rpc.cluster.loadbalance.SimpleLoadBalance
