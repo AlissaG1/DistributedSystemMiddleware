@@ -38,7 +38,7 @@ public class MetricsHttpServer {
     /**
      * 默认端口
      */
-    private static final int DEFAULT_PORT = 8064;
+    private static final int DEFAULT_PORT = 8063;
     private static final int DEFAULT_CORE_POOL_SIZE = 10;
     private static final int DEFAULT_MAX_POOL_SIZE = 100;
     private static final long DEFAULT_MAX_ALIVE_TIMEOUT = 0L;
