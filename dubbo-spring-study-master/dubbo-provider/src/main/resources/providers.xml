@@ -18,7 +18,7 @@
 	
 	<!-- 声明需要暴露的服务接口 -->
 	<dubbo:service group="robb" interface="com.minbo.dubbo.provider.DemoService"
-		ref="demoService" timeout="10000" loadbalance="leastactive"/>
+		ref="demoService" timeout="10000" loadbalance="latency"/>
 		
 	<!-- <dubbo:monitor protocol="registry"></dubbo:monitor> -->
 	
