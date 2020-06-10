@@ -12,13 +12,13 @@
 	
 	<!-- 定义 zookeeper 注册中心地址及协议 -->
 	<dubbo:registry protocol="zookeeper" address="localhost:2181, localhost:2182, localhost:2183" client="zkclient" />
-	<dubbo:monitor protocol="registry"></dubbo:monitor>
+
 	<!-- 定义 Dubbo 协议名称及使用的端口，dubbo 协议缺省端口为 20880，如果配置为 -1 或者没有配置 port，则会分配一个没有被占用的端口 -->
 	<dubbo:protocol name="dubbo" port="-1" />
-	
+	<dubbo:monitor protocol="registry"></dubbo:monitor>
 	<!-- 声明需要暴露的服务接口 -->
-	<dubbo:service group="robb" interface="com.minbo.dubbo.provider.DemoService"
-		ref="demoService" timeout="10000" loadbalance="latency"/>
+	<dubbo:service interface="com.minbo.dubbo.provider.DemoService"
+		ref="demoService" timeout="10000" loadbalance="roundrobin"/>
 		
 	<!-- <dubbo:monitor protocol="registry"></dubbo:monitor> -->
 	

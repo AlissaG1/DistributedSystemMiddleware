@@ -16,14 +16,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class LatencyLoadBalance implements LoadBalance {
-	private final int DEFAULT_PORT=8060;
+	private final int DEFAULT_PORT=8063;
 
 	public <T> Invoker<T> select(List<Invoker<T>> invokers, URL url, Invocation invocation) throws RpcException {
 		// TODO Auto-generated method stub
 //		System.out.println("select of LatencyLoadBalance");
 		Double minValue=null;
 		int minIdx=0;
-		for(int i=0;i<invokers.size();i++) {
+
+		for (int i = 0; i < invokers.size(); i++) {
 			URL purl = invokers.get(i).getUrl();
 			String path = "/metrics/specific?metric=middleware.metrics.rest.url.rt";
 			int port_offset = purl.getPort() - 20880;
@@ -35,7 +36,7 @@ public class LatencyLoadBalance implements LoadBalance {
 				conn.setRequestMethod("GET");
 				conn.connect();
 				if (conn.getResponseCode() == 200) {
-//					System.out.println("200");
+//				System.out.println("200");
 					InputStream is = conn.getInputStream();
 					BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 					StringBuffer sbf = new StringBuffer();
@@ -47,10 +48,10 @@ public class LatencyLoadBalance implements LoadBalance {
 					JSONObject json = JSONObject.parseObject(result);
 					JSONObject data = json.getJSONArray("data").getJSONObject(0);
 					double value = data.getDoubleValue("value");
-//					System.out.println("value " + value);
-					if(minValue==null || value<minValue){
-						minValue=value;
-						minIdx=i;
+//				System.out.println("value " + value);
+					if (minValue == null || value < minValue) {
+						minValue = value;
+						minIdx = i;
 					}
 				}
 
@@ -59,6 +60,7 @@ public class LatencyLoadBalance implements LoadBalance {
 				e.printStackTrace();
 			}
 		}
+
 		return invokers.get(minIdx);
 	}
 
