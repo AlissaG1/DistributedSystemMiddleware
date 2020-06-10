@@ -17,40 +17,7 @@ public class DubboProviderApplication {
 	private static MetricsHttpServer metricsHttpServer = null;
 
 	public static void main(String[] args) {
-		init();
+		Bootstrap.init();
 		SpringApplication.run(DubboProviderApplication.class, args);
-	}
-
-
-
-	public static void init() {
-		System.out.println(ConfigFields.CONFIG_FILE_NAME);
-		init(System.getProperty(ConfigFields.CONFIG_FILE_NAME));
-	}
-
-	public static void init(String configFile) {
-
-		LoggerProvider.initLogger();
-
-		Properties config = MetricsIntegrateUtils.parsePropertiesFromFile(configFile);
-		if (configFile != null) {
-			config.setProperty(ConfigFields.CONFIG_FILE_NAME, configFile);
-		}
-
-		if (MetricsIntegrateUtils.isEnabled(config, "com.alibaba.metrics.http_server.start")) {
-			startHttpServer();
-		}
-		MetricsIntegrateUtils.registerAllMetrics(config);
-	}
-
-	public static void destroy() {
-		if (metricsHttpServer != null) {
-			metricsHttpServer.stop();
-		}
-	}
-
-	private static void startHttpServer() {
-		metricsHttpServer = new MetricsHttpServer();
-		metricsHttpServer.start();
 	}
 }
