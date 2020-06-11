@@ -11,7 +11,7 @@
 	<dubbo:application name="dubbo-consumer" owner="dubbo-consumer" />
 
 	<!-- 定义 zookeeper 注册中心地址及协议 -->
-	<dubbo:registry protocol="zookeeper" address="localhost:2181, localhost:2182, localhost:2183" client="zkclient" />
+	<dubbo:registry protocol="zookeeper" address="localhost:2181" client="zkclient" />
 	<dubbo:monitor protocol="registry"></dubbo:monitor>
 	<!-- 生成远程服务代理，可以和本地 bean 一样使用 testService -->
 	<dubbo:reference id="demoService" interface="com.minbo.dubbo.provider.DemoService" />

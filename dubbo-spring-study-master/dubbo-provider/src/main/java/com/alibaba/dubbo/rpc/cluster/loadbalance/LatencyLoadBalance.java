@@ -23,44 +23,44 @@ public class LatencyLoadBalance implements LoadBalance {
 //		System.out.println("select of LatencyLoadBalance");
 		Double minValue=null;
 		int minIdx=0;
-
-		for (int i = 0; i < invokers.size(); i++) {
-			URL purl = invokers.get(i).getUrl();
-			String path = "/metrics/specific?metric=middleware.metrics.rest.url.rt";
-			int port_offset = purl.getPort() - 20880;
-			int metrics_port = DEFAULT_PORT + port_offset;
-			try {
-				java.net.URL queryUrl = new java.net.URL("http", purl.getIp(), metrics_port, path);
-				System.out.println(queryUrl.toString());
-				HttpURLConnection conn = (HttpURLConnection) queryUrl.openConnection();
-				conn.setRequestMethod("GET");
-				conn.connect();
-				if (conn.getResponseCode() == 200) {
+		synchronized (this) {
+			for (int i = 0; i < invokers.size(); i++) {
+				URL purl = invokers.get(i).getUrl();
+				String path = "/metrics/specific?metric=middleware.metrics.rest.url.rt";
+				int port_offset = purl.getPort() - 20880;
+				int metrics_port = DEFAULT_PORT + port_offset;
+				try {
+					java.net.URL queryUrl = new java.net.URL("http", purl.getIp(), metrics_port, path);
+					System.out.println(queryUrl.toString());
+					HttpURLConnection conn = (HttpURLConnection) queryUrl.openConnection();
+					conn.setRequestMethod("GET");
+					conn.connect();
+					if (conn.getResponseCode() == 200) {
 //				System.out.println("200");
-					InputStream is = conn.getInputStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-					StringBuffer sbf = new StringBuffer();
-					String temp = null;
-					while ((temp = br.readLine()) != null) {
-						sbf.append(temp + "\n");
-					}
-					String result = sbf.toString();
-					JSONObject json = JSONObject.parseObject(result);
-					JSONObject data = json.getJSONArray("data").getJSONObject(0);
-					double value = data.getDoubleValue("value");
+						InputStream is = conn.getInputStream();
+						BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+						StringBuffer sbf = new StringBuffer();
+						String temp = null;
+						while ((temp = br.readLine()) != null) {
+							sbf.append(temp + "\n");
+						}
+						String result = sbf.toString();
+						JSONObject json = JSONObject.parseObject(result);
+						JSONObject data = json.getJSONArray("data").getJSONObject(0);
+						double value = data.getDoubleValue("value");
 //				System.out.println("value " + value);
-					if (minValue == null || value < minValue) {
-						minValue = value;
-						minIdx = i;
+						if (minValue == null || value < minValue) {
+							minValue = value;
+							minIdx = i;
+						}
 					}
-				}
 
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-
 		return invokers.get(minIdx);
 	}
 

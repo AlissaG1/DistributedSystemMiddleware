@@ -55,7 +55,7 @@ public class Bootstrap {
 
     private static void startHttpServer() {
         metricsHttpServer = new MetricsHttpServer();
-        metricsHttpServer.setPort(8065);
+        metricsHttpServer.setPort(8066);
         metricsHttpServer.start();
     }
 }
