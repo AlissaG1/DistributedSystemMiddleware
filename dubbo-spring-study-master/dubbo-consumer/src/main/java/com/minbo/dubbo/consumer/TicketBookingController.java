@@ -9,22 +9,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/tickets")
 public class TicketBookingController {
     @Autowired
     DemoService demoService;
 
+    @RequestMapping("/")
+    public String toHome(){
+//        System.out.println("tohome");
+        return "/tickets.html";
+    }
+
     /**
-     * @param name 名字
-     * @return
+     * @return purchase status
      */
     @ResponseBody
-    @RequestMapping("/purchase/{name}")
-    public JSONObject purchase(@PathVariable("name") String name) {
+    @RequestMapping("/purchase")
+    public String purchase() {
         JSONObject jsonObject = new JSONObject();
-        String Str = demoService.confirmPurchase(name);
-        jsonObject.put("str", Str);
-        return jsonObject;
+        boolean succ = demoService.confirmPurchase();
+        return succ?"purchase successfully completed":"purchase fail";
     }
 
 }

@@ -9,8 +9,11 @@ public class DemoServiceImpl implements DemoService{
 		return "Welcome to Minbo's Dubbo, Hello " + name;
 	}
 
-	public String confirmPurchase(String name){
-		return name+", your purchase is completed";
+	public boolean confirmPurchase(){
+
+		boolean succ=true;
+
+		return succ;
 	}
 
 }
