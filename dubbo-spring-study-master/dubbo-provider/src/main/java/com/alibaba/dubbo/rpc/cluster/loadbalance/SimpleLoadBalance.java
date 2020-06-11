@@ -68,8 +68,8 @@ public class SimpleLoadBalance implements LoadBalance {
 		System.out.println("KKK");
 		Random r=new Random();
 		int ran=r.nextInt(invokers.size());
-		//return invokers.get(ran);
-		return invokers.get(0);
+		return invokers.get(ran);
+		//return invokers.get(0);
 	}
 
 //	@Override
